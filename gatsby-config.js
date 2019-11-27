@@ -3,8 +3,8 @@ require('dotenv').config({
 })
 // management token - CFPAT-BEIlhSd1qrn1_i1ZEpRNRXPjqLKm_7B2gd3JagioDjY
 const contentfulConfig = {
-  spaceId: process.env.CONTENTFUL_SPACE_ID,
-  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
+  spaceId: 'eqfxyu5uhc4y',
+  accessToken: '71QUoCgw4BM4UIXQJDTI-vz-WX2zWkMDjnfDigAac4A',
   host: process.env.CONTENTFUL_HOST
 }
 
