@@ -2,6 +2,7 @@ import React from 'react'
 import {graphql} from 'gatsby'
 import get from 'lodash/get'
 import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
+import "./base.css"
 
 class RootIndex extends React.Component {
     render() {
