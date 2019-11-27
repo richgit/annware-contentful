@@ -1,7 +1,7 @@
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`
 })
-
+// management token - CFPAT-BEIlhSd1qrn1_i1ZEpRNRXPjqLKm_7B2gd3JagioDjY
 const contentfulConfig = {
   spaceId: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,

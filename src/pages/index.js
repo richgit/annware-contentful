@@ -1,38 +1,80 @@
 import React from 'react'
-import { graphql } from 'gatsby'
+import {graphql} from 'gatsby'
 import get from 'lodash/get'
-import Helmet from 'react-helmet'
-import Hero from '../components/hero'
-import Layout from '../components/layout'
-import ArticlePreview from '../components/article-preview'
+import SimpleReactLightbox, {SRLWrapper} from "simple-react-lightbox";
 
 class RootIndex extends React.Component {
-  render() {
-    const siteTitle = get(this, 'props.data.site.siteMetadata.title')
-    const posts = get(this, 'props.data.allContentfulBlogPost.edges')
-    const [author] = get(this, 'props.data.allContentfulPerson.edges')
+    render() {
+        const siteTitle = get(this, 'props.data.site.siteMetadata.title')
+        const piecesOfArt = get(this, 'props.data.allContentfulPieceOfArt.edges')
 
-    return (
-      <Layout location={this.props.location} >
-        <div style={{ background: '#fff' }}>
-          <Helmet title={siteTitle} />
-          <Hero data={author.node} />
-          <div className="wrapper">
-            <h2 className="section-headline">Recent articles</h2>
-            <ul className="article-list">
-              {posts.map(({ node }) => {
-                return (
-                  <li key={node.slug}>
-                    <ArticlePreview article={node} />
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
-        </div>
-      </Layout>
-    )
-  }
+        return (
+            <SimpleReactLightbox>
+                <div id="wrapper">
+
+                    <header id="header">
+                        <h1><img src="aw_logo.png" alt=""/></h1>
+                        {/*<nav>*/}
+                        {/*    <ul>*/}
+                        {/*        <li><a href="#footer" className="icon solid fa-info-circle">About</a></li>*/}
+                        {/*    </ul>*/}
+                        {/*</nav>*/}
+                    </header>
+
+                    <SRLWrapper>
+                        <div id="main">
+
+                            {piecesOfArt.map(({node, index}) => {
+                                return (
+                                    <article key={index} className="thumb">
+                                        <a key={index} href={node.image.file.url} data-attribute="SRL">
+                                            <img src={node.image.file.url} alt={node.image.title}/>
+                                            {/*<Img alt={node.image.title} src={node.image.file.url} fluid={node.image.fluid} />*/}
+                                        </a>
+                                        <h2>{node.title}</h2>
+                                        <p>{node.image.description}</p>
+                                    </article>
+                                )
+                            })}
+                        </div>
+                    </SRLWrapper>
+                    <footer id="footer" className="panel">
+                        <div className="inner split">
+                            <div>
+                                <section>
+                                    <h2>Magna feugiat sed adipiscing</h2>
+                                    <p>Nulla consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque
+                                        turpis ipsum eget quis orci mattis aliquet. Maecenas fringilla et ante at lorem
+                                        et ipsum. Dolor nulla eu bibendum sapien. Donec non pharetra dui. Nulla
+                                        consequat, ex ut suscipit rutrum, mi dolor tincidunt erat, et scelerisque turpis
+                                        ipsum.</p>
+                                </section>
+                                <section>
+                                    <h2>Follow me on ...</h2>
+                                    <ul className="icons">
+                                        <li><a href="#" className="icon brands fa-twitter"><span
+                                            className="label">Twitter</span></a></li>
+                                        <li><a href="#" className="icon brands fa-facebook-f"><span
+                                            className="label">Facebook</span></a></li>
+                                        <li><a href="#" className="icon brands fa-instagram"><span
+                                            className="label">Instagram</span></a></li>
+                                        <li><a href="#" className="icon brands fa-github"><span
+                                            className="label">GitHub</span></a></li>
+                                        <li><a href="#" className="icon brands fa-dribbble"><span
+                                            className="label">Dribbble</span></a></li>
+                                        <li><a href="#" className="icon brands fa-linkedin-in"><span
+                                            className="label">LinkedIn</span></a></li>
+                                    </ul>
+                                </section>
+                            </div>
+
+                        </div>
+                    </footer>
+
+                </div>
+            </SimpleReactLightbox>
+        )
+    }
 }
 
 export default RootIndex
@@ -44,42 +86,18 @@ export const pageQuery = graphql`
         title
       }
     }
-    allContentfulBlogPost(sort: { fields: [publishDate], order: DESC }) {
+    allContentfulPieceOfArt {
       edges {
         node {
           title
-          slug
-          publishDate(formatString: "MMMM Do, YYYY")
-          tags
-          heroImage {
-            fluid(maxWidth: 350, maxHeight: 196, resizingBehavior: SCALE) {
+          image {
+            description
+            title
+            file {
+              url
+            }
+            fluid(maxWidth: 350, maxHeight: 300, resizingBehavior: SCALE) {
              ...GatsbyContentfulFluid_tracedSVG
-            }
-          }
-          description {
-            childMarkdownRemark {
-              html
-            }
-          }
-        }
-      }
-    }
-    allContentfulPerson(filter: { contentful_id: { eq: "15jwOBqpxqSAOy2eOO4S0m" } }) {
-      edges {
-        node {
-          name
-          shortBio {
-            shortBio
-          }
-          title
-          heroImage: image {
-            fluid(
-              maxWidth: 1180
-              maxHeight: 480
-              resizingBehavior: PAD
-              background: "rgb:000000"
-            ) {
-              ...GatsbyContentfulFluid_tracedSVG
             }
           }
         }
